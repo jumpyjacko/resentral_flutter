@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:after_layout/after_layout.dart';
 
 import 'package:resentral/pages/daily_timetable.dart';
 import 'package:resentral/pages/announcements.dart';
 import 'package:resentral/pages/settings.dart';
+import 'package:resentral/pages/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'reSentral',
       themeMode: ThemeMode.system,
       theme: ThemeData(
         textTheme: GoogleFonts.openSansTextTheme(
@@ -42,7 +45,41 @@ class MyApp extends StatelessWidget {
           secondary: Colors.blue.shade50,
         ),
       ),
-      home: const HomePage(),
+      home: new Splash(),
+    );
+  }
+}
+
+class Splash extends StatefulWidget {
+  @override
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new HomePage()));
+    } else {
+      await prefs.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new LoginPage()));
+    }
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: new Center(
+        child: new Text('Loading...'),
+      ),
     );
   }
 }
@@ -82,7 +119,7 @@ class _HomePageState extends State<HomePage> {
             shadowColor: Colors.transparent,
             selectedIndex: index,
             onDestinationSelected: (index) =>
-                setState(() => {this.index = index, this.inSettings = false}),
+                setState(() => this.index = index),
             destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.today_outlined),
@@ -109,8 +146,16 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: const Icon(Icons.settings),
           tooltip: 'Settings',
-          onPressed: () => setState(() => this.inSettings = !this.inSettings),
+          onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SettingsPage())),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.replay),
+            tooltip: 'Refresh',
+            onPressed: () {},
+          )
+        ],
       ),
     );
   }
