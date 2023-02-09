@@ -28,9 +28,14 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       future: timetable,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          for (var periods in snapshot.data.periods) {
+          for (var periods in snapshot.data!.periods) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+              child: Text(
+                periods.subject,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground),
+              ),
             );
           }
         } else if (snapshot.hasError) {
