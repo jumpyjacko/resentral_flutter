@@ -23,26 +23,53 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
     });
   }
 
+  Widget timetableCards(Future<DailyTimetable> timetable) {
+    return FutureBuilder(
+      future: timetable,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          for (var periods in snapshot.data.periods) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Text("Try reloading (${snapshot.error})");
+        }
+
+        return const CircularProgressIndicator();
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    _loadPrefs();
-    futureDailyTimetable = fetchDailyTimetable(_username, _password);
+    _loadPrefs().then((value) =>
+        futureDailyTimetable = fetchDailyTimetable(_username, _password));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Container(
-        padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
-        alignment: Alignment.topLeft,
-        child: const Text(
-          "Daily Timetable",
-          style: TextStyle(
-            fontSize: 30.0,
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Daily Timetable",
+              style: TextStyle(
+                fontSize: 30.0,
+              ),
+            ),
           ),
-        ),
+          SizedBox(
+            height: 40.0,
+          ),
+          timetableCards(futureDailyTimetable),
+        ],
       ),
     );
   }
@@ -51,44 +78,40 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
 Future<DailyTimetable> fetchDailyTimetable(
     String username, String password) async {
   final response = await http.post(
-    Uri.parse('http://localhost:3000/daily_timetable'),
+    Uri.parse('https://resentral-server.onrender.com/daily_timetable'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
-    body: jsonEncode(<String, dynamic>{
-      'username': username,
-      'password': password,
+    body: jsonEncode(<String, String>{
+      "username": username,
+      "password": password,
     }),
   );
   if (response.statusCode == 200) {
     return DailyTimetable.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to fetch daily timetable');
+    throw Exception('Failed to fetch: ${response.statusCode}');
   }
 }
 
 class DailyTimetable {
-  final List<Period> periods;
-
   const DailyTimetable({
     required this.periods,
   });
 
-  factory DailyTimetable.fromJson(Map<String, dynamic> json) {
-    return DailyTimetable(
-      periods: json['periods'],
-    );
-  }
+  final List<Period> periods;
+
+  factory DailyTimetable.fromJson(Map<String, dynamic> json) => DailyTimetable(
+          periods: List<Period>.from(
+        json['periods'].map((x) => Period.fromJson(x)),
+      ));
+
+  Map<String, dynamic> toJson() => {
+        "periods": List<dynamic>.from(periods.map((x) => x.toJson())),
+      };
 }
 
 class Period {
-  final String period;
-  final String subject;
-  final String subject_short;
-  final String room;
-  final String teacher;
-  final String colour;
-
   const Period({
     required this.period,
     required this.subject,
@@ -98,14 +121,28 @@ class Period {
     required this.colour,
   });
 
-  factory Period.fromJson(Map<String, dynamic> json) {
-    return Period(
-      period: json['period'],
-      subject: json['subject'],
-      subject_short: json['subject_short'],
-      room: json['room'],
-      teacher: json['teacher'],
-      colour: json['colour'],
-    );
-  }
+  final String period;
+  final String subject;
+  final String subject_short;
+  final String room;
+  final String teacher;
+  final String colour;
+
+  factory Period.fromJson(Map<String, dynamic> json) => Period(
+        period: json['period'],
+        subject: json['subject'],
+        subject_short: json['subject_short'],
+        room: json['room'],
+        teacher: json['teacher'],
+        colour: json['colour'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "period": period,
+        "subject": subject,
+        "subject_short": subject_short,
+        "room": room,
+        "teacher": teacher,
+        "colour": colour,
+      };
 }
