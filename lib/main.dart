@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           secondary: Colors.blue.shade50,
         ),
       ),
-      home: new Splash(),
+      home: Splash(),
     );
   }
 }
@@ -62,11 +62,11 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
 
     if (_seen) {
       Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new HomePage()));
+          MaterialPageRoute(builder: (context) => const HomePage()));
     } else {
       await prefs.setBool('seen', true);
       Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new LoginPage()));
+          MaterialPageRoute(builder: (context) => const LoginPage()));
     }
   }
 
@@ -77,8 +77,9 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: new Center(
-        child: new Text('Loading...'),
+      body: Center(
+        child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.onBackground),
       ),
     );
   }
@@ -96,18 +97,18 @@ class _HomePageState extends State<HomePage> {
   bool inSettings = false;
 
   final screens = [
-    DailyTimetablePage(),
-    AnnouncementsPage(),
-    Center(child: Text("other")),
+    const DailyTimetablePage(),
+    const AnnouncementsPage(),
+    const Center(child: Text("other")),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: inSettings ? SettingsPage() : screens[index],
+      body: inSettings ? const SettingsPage() : screens[index],
       bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 50, right: 50),
+        margin: const EdgeInsets.only(left: 50, right: 50),
         child: NavigationBarTheme(
           data: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.background,
@@ -145,6 +146,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         leading: IconButton(
           icon: const Icon(Icons.settings),
+          color: Theme.of(context).colorScheme.onBackground,
           tooltip: 'Settings',
           onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SettingsPage())),
@@ -152,6 +154,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.replay),
+            color: Theme.of(context).colorScheme.onBackground,
             tooltip: 'Refresh',
             onPressed: () {},
           )

@@ -15,6 +15,12 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SettingsList(
+        lightTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).colorScheme.background,
+        ),
+        darkTheme: SettingsThemeData(
+          settingsListBackground: Theme.of(context).colorScheme.background,
+        ),
         sections: [
           SettingsSection(
             title: Text("Login and Data"),
@@ -26,21 +32,32 @@ class _SettingsPageState extends State<SettingsPage> {
                   prefs.clear();
                 },
               ),
-              SettingsTile.navigation(title: Text("Change login")),
-              SettingsTile.navigation(title: Text("Change school")),
+              SettingsTile.navigation(
+                title: Text("Change login"),
+                enabled: false,
+              ),
+              SettingsTile.navigation(
+                title: Text("Change school"),
+                enabled: false,
+              ),
             ],
           ),
           SettingsSection(
             title: Text("Appearance"),
             tiles: [
-              SettingsTile.navigation(title: Text("Accent Colour")),
+              SettingsTile.navigation(
+                title: Text("Accent Colour"),
+                enabled: false,
+              ),
             ],
           ),
           SettingsSection(
             title: Text("Advanced"),
             tiles: [
               SettingsTile.navigation(
-                  title: Text("Change API provider/server")),
+                title: Text("Change API provider/server"),
+                enabled: false,
+              ),
             ],
           ),
         ],
@@ -48,9 +65,12 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0.0,
-        title: Text("Settings"),
+        title: Text("Settings",
+            style:
+                TextStyle(color: Theme.of(context).colorScheme.onBackground)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
+          color: Theme.of(context).colorScheme.onBackground,
           tooltip: 'Back',
           onPressed: () => Navigator.of(context).pop(),
         ),

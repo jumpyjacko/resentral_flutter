@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage>
                       textStyle: const TextStyle(
                         fontSize: 25.0,
                       ),
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       rotateOut: false,
                     ),
                   ],
@@ -93,14 +93,14 @@ class _LoginPageState extends State<LoginPage>
                         fontSize: 25.0,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      speed: Duration(milliseconds: 150),
+                      speed: const Duration(milliseconds: 150),
                     ),
                   ],
                   totalRepeatCount: 1,
                   onFinished: () {
                     controller.forward();
                   },
-                  pause: Duration(seconds: 1, milliseconds: 500),
+                  pause: const Duration(seconds: 1, milliseconds: 500),
                 ),
                 AnimatedTextKit(
                   animatedTexts: [
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage>
                       textStyle: const TextStyle(
                         fontSize: 25.0,
                       ),
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       rotateOut: false,
                     ),
                   ],
@@ -117,13 +117,13 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ],
             ),
-            Container(
+            SizedBox(
               height: loginOpenAnimation.value,
               child: Column(
                 children: [
-                  SizedBox(height: 50.0),
-                  Text("Login", style: TextStyle(fontSize: 16.0)),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 50.0),
+                  const Text("Login", style: TextStyle(fontSize: 16.0)),
+                  const SizedBox(height: 10.0),
                   Text("Use your sentral login details",
                       style: TextStyle(
                           fontSize: 12.0,
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage>
                               .onBackground
                               .withAlpha(150))),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
+                    padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
                     child: TextField(
                       controller: usernameController,
                       decoration: const InputDecoration(
@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
+                    padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
                     child: TextField(
                       controller: passwordController,
                       obscureText: true,
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage>
                   TextButton(
                     onPressed: () async {
                       if (usernameController.text != "" &&
-                          passwordController != "") {
+                          passwordController.text != "") {
                         _saveLogin(
                           usernameController.text,
                           passwordController.text,
