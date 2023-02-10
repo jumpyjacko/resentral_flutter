@@ -15,14 +15,6 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
   String _username = '';
   String _password = '';
 
-  Future<void> _loadPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _username = (prefs.getString('username') ?? '');
-      _password = (prefs.getString('password') ?? '');
-    });
-  }
-
   Widget timetableCards(Future<DailyTimetable> timetable) {
     List<Widget> list = <Widget>[];
     final rgbRegex = RegExp(r'(\d+), (\d+), (\d+)');
@@ -110,11 +102,65 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
     );
   }
 
+  Future<void> _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _username = (prefs.getString('username') ?? '');
+      _password = (prefs.getString('password') ?? '');
+    });
+  }
+
+  Future<DailyTimetable> getDailyTimetableFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    return DailyTimetable.fromJson(
+        jsonDecode(prefs.getStringList('daily_timetable')!.first));
+  }
+
+  Future<DailyTimetable> fetchDailyTimetable(
+      String username, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    final response = await http.post(
+      Uri.parse('https://resentral-server.onrender.com/daily_timetable'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        "username": username,
+        "password": password,
+      }),
+    );
+    if (response.statusCode == 200) {
+      prefs.setStringList(
+          'daily_timetable', [response.body, DateTime.now().toString()]);
+      return DailyTimetable.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to fetch: ${response.statusCode}');
+    }
+  }
+
+  Future<void> setGetFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getStringList('daily_timetable') != null &&
+        DateTime.parse(prefs.getStringList('daily_timetable')!.last).day !=
+            DateTime.now().day) {
+      prefs.remove('daily_timetable');
+    }
+
+    if (prefs.getStringList('daily_timetable') == null ||
+        prefs.getStringList('daily_timetable')!.isEmpty) {
+      _loadPrefs().then((value) =>
+          futureDailyTimetable = fetchDailyTimetable(_username, _password));
+    } else {
+      futureDailyTimetable = getDailyTimetableFromPrefs();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _loadPrefs().then((value) =>
-        futureDailyTimetable = fetchDailyTimetable(_username, _password));
+    setGetFromPrefs();
   }
 
   @override
@@ -142,25 +188,6 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
         ),
       ),
     );
-  }
-}
-
-Future<DailyTimetable> fetchDailyTimetable(
-    String username, String password) async {
-  final response = await http.post(
-    Uri.parse('https://resentral-server.onrender.com/daily_timetable'),
-    headers: <String, String>{
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(<String, String>{
-      "username": username,
-      "password": password,
-    }),
-  );
-  if (response.statusCode == 200) {
-    return DailyTimetable.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to fetch: ${response.statusCode}');
   }
 }
 
