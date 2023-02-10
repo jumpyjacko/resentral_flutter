@@ -24,20 +24,83 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
   }
 
   Widget timetableCards(Future<DailyTimetable> timetable) {
+    List<Widget> list = <Widget>[];
+    final rgbRegex = RegExp(r'(\d+), (\d+), (\d+)');
+
+    late int red, green, blue;
+
     return FutureBuilder(
       future: timetable,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          for (var periods in snapshot.data!.periods) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-              child: Text(
-                periods.subject,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground),
-              ),
+          for (var period in snapshot.data!.periods) {
+            if (period.colour.contains('rgb')) {
+              var match = rgbRegex.firstMatch(period.colour);
+              red = int.parse(match!.group(1).toString());
+              green = int.parse(match.group(2).toString());
+              blue = int.parse(match.group(3).toString());
+            } else {
+              red = 100;
+              green = 100;
+              blue = 100;
+            }
+            list.add(
+              SizedBox(
+                  height: period.subject != '' ? 120.0 : 40.0,
+                  width: MediaQuery.of(context).size.width * 0.90,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        child: Text(
+                          period.period,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        width: 5.0,
+                        height: period.subject != '' ? 100.0 : 20.0,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, red, green, blue),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5))),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 17.0),
+                          Text(
+                            period.subject,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            period.subject_short,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onBackground
+                                    .withAlpha(150)),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Text(
+                            period.room != '' ? 'In ${period.room}' : '',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            period.teacher != ' '
+                                ? "With ${period.teacher}"
+                                : '',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
             );
           }
+          return Column(children: list);
         } else if (snapshot.hasError) {
           return Text("Try reloading (${snapshot.error})");
         }
@@ -58,23 +121,25 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Daily Timetable",
-              style: TextStyle(
-                fontSize: 30.0,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
+              alignment: Alignment.topLeft,
+              child: const Text(
+                "Daily Timetable",
+                style: TextStyle(
+                  fontSize: 30.0,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 40.0,
-          ),
-          timetableCards(futureDailyTimetable),
-        ],
+            const SizedBox(
+              height: 40.0,
+            ),
+            timetableCards(futureDailyTimetable),
+          ],
+        ),
       ),
     );
   }
