@@ -167,25 +167,32 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
-              alignment: Alignment.topLeft,
-              child: const Text(
-                "Daily Timetable",
-                style: TextStyle(
-                  fontSize: 30.0,
+      body: RefreshIndicator(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
+                alignment: Alignment.topLeft,
+                child: const Text(
+                  "Daily Timetable",
+                  style: TextStyle(
+                    fontSize: 30.0,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 40.0,
-            ),
-            timetableCards(futureDailyTimetable),
-          ],
+              const SizedBox(
+                height: 40.0,
+              ),
+              timetableCards(futureDailyTimetable),
+            ],
+          ),
         ),
+        onRefresh: () async {
+          // final prefs = await SharedPreferences.getInstance();
+          // prefs.remove('daily_timetable');
+          setGetFromPrefs();
+        },
       ),
     );
   }

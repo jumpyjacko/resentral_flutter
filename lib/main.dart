@@ -94,19 +94,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  bool inSettings = false;
 
   final screens = [
-    const DailyTimetablePage(),
-    const AnnouncementsPage(),
-    const Center(child: Text("other")),
+    DailyTimetablePage(key: UniqueKey()),
+    AnnouncementsPage(key: UniqueKey()),
+    const Center(child: Text('Will be something, don\'t know what though.')),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: inSettings ? const SettingsPage() : screens[index],
+      body: screens[index],
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(left: 50, right: 50),
         child: NavigationBarTheme(
@@ -151,14 +150,14 @@ class _HomePageState extends State<HomePage> {
           onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SettingsPage())),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.replay),
-            color: Theme.of(context).colorScheme.onBackground,
-            tooltip: 'Refresh',
-            onPressed: () {},
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.replay),
+        //     color: Theme.of(context).colorScheme.onBackground,
+        //     tooltip: 'Refresh',
+        //     onPressed: () {},
+        //   )
+        // ],
       ),
     );
   }
