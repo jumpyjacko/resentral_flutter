@@ -113,8 +113,12 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
 
   Future<DailyTimetable> getDailyTimetableFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    return DailyTimetable.fromJson(
-        jsonDecode(prefs.getStringList('daily_timetable')!.first));
+    if (prefs.getStringList('daily_timetable') != null) {
+      return DailyTimetable.fromJson(
+          jsonDecode(prefs.getStringList('daily_timetable')!.first));
+    } else {
+      throw Exception('Failed to fetch from local??');
+    }
   }
 
   Future<DailyTimetable> fetchDailyTimetable(
@@ -153,7 +157,8 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       _loadPrefs().then((value) =>
           futureDailyTimetable = fetchDailyTimetable(_username, _password));
     } else {
-      futureDailyTimetable = getDailyTimetableFromPrefs();
+      _loadPrefs()
+          .then((value) => futureDailyTimetable = getDailyTimetableFromPrefs());
     }
   }
 
