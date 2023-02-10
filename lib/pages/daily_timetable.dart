@@ -194,8 +194,8 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
           ),
         ),
         onRefresh: () async {
-          // final prefs = await SharedPreferences.getInstance();
-          // prefs.remove('daily_timetable');
+          final prefs = await SharedPreferences.getInstance();
+          prefs.remove('daily_timetable');
           setGetFromPrefs();
         },
       ),
