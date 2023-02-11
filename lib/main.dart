@@ -7,6 +7,7 @@ import 'package:resentral/pages/daily_timetable.dart';
 import 'package:resentral/pages/announcements.dart';
 import 'package:resentral/pages/settings.dart';
 import 'package:resentral/pages/login.dart';
+import 'package:resentral/pages/about.dart';
 
 void main() {
   runApp(const MyApp());
@@ -150,14 +151,15 @@ class _HomePageState extends State<HomePage> {
           onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SettingsPage())),
         ),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.replay),
-        //     color: Theme.of(context).colorScheme.onBackground,
-        //     tooltip: 'Refresh',
-        //     onPressed: () {},
-        //   )
-        // ],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            color: Theme.of(context).colorScheme.onBackground,
+            tooltip: 'Refresh',
+            onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AboutPage())),
+          )
+        ],
       ),
     );
   }
