@@ -152,13 +152,45 @@ class _HomePageState extends State<HomePage> {
               MaterialPageRoute(builder: (context) => const SettingsPage())),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            color: Theme.of(context).colorScheme.onBackground,
-            tooltip: 'Refresh',
-            onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AboutPage())),
-          )
+          // IconButton(
+          //   icon: const Icon(Icons.more_vert),
+          //   color: Theme.of(context).colorScheme.onBackground,
+          //   tooltip: 'Refresh',
+          //   onPressed: () => Navigator.of(context).push(
+          //       MaterialPageRoute(builder: (context) => const AboutPage())),
+          // )
+          Theme(
+            data: Theme.of(context).copyWith(
+              cardColor: Theme.of(context).colorScheme.background,
+            ),
+            child: PopupMenuButton<int>(
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 1,
+                  child: const Text("About"),
+                ),
+                const PopupMenuItem(
+                  value: 2,
+                  child: const Text("Check for Updates"),
+                ),
+              ],
+              offset: Offset(0, AppBar().preferredSize.height),
+              onSelected: (value) {
+                switch (value) {
+                  case 1:
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AboutPage()));
+                    break;
+                  case 2:
+                    // () => Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => const AboutPage()));
+                    print("pressed check for updates");
+                    break;
+                  default:
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
