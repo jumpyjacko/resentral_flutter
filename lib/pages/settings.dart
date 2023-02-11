@@ -23,39 +23,39 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         sections: [
           SettingsSection(
-            title: Text('Login and Data'),
+            title: const Text('Login and Data'),
             tiles: [
               SettingsTile.navigation(
-                title: Text('Clears All Data'),
+                title: const Text('Clears All Data'),
                 onPressed: (context) async {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.clear();
                 },
               ),
               SettingsTile.navigation(
-                title: Text('Change login'),
+                title: const Text('Change login'),
                 enabled: false,
               ),
               SettingsTile.navigation(
-                title: Text('Change school'),
-                enabled: false,
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: Text('Appearance'),
-            tiles: [
-              SettingsTile.navigation(
-                title: Text('Accent Colour'),
+                title: const Text('Change school'),
                 enabled: false,
               ),
             ],
           ),
           SettingsSection(
-            title: Text('Advanced'),
+            title: const Text('Appearance'),
             tiles: [
               SettingsTile.navigation(
-                title: Text('Change API provider/server'),
+                title: const Text('Accent Colour'),
+                enabled: false,
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: const Text('Advanced'),
+            tiles: [
+              SettingsTile.navigation(
+                title: const Text('Change API provider/server'),
                 enabled: false,
               ),
             ],
