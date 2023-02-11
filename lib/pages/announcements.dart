@@ -38,7 +38,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
         padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
         alignment: Alignment.topLeft,
         child: const Text(
-          "Announcements",
+          'Announcements',
           style: TextStyle(
             fontSize: 30.0,
           ),

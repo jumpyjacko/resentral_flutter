@@ -82,7 +82,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
                           ),
                           Text(
                             period.teacher != ' '
-                                ? "With ${period.teacher}"
+                                ? 'With ${period.teacher}'
                                 : '',
                             style: const TextStyle(fontSize: 14),
                           ),
@@ -94,7 +94,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
           }
           return Column(children: list);
         } else if (snapshot.hasError) {
-          return Text("Try reloading (${snapshot.error})");
+          return Text('Try reloading (${snapshot.error})');
         }
 
         return const CircularProgressIndicator();
@@ -130,8 +130,8 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, String>{
-        "username": username,
-        "password": password,
+        'username': username,
+        'password': password,
       }),
     );
     if (response.statusCode == 200) {
@@ -180,7 +180,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
                 padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
                 alignment: Alignment.topLeft,
                 child: const Text(
-                  "Daily Timetable",
+                  'Daily Timetable',
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -216,7 +216,7 @@ class DailyTimetable {
       ));
 
   Map<String, dynamic> toJson() => {
-        "periods": List<dynamic>.from(periods.map((x) => x.toJson())),
+        'periods': List<dynamic>.from(periods.map((x) => x.toJson())),
       };
 }
 
@@ -247,11 +247,11 @@ class Period {
       );
 
   Map<String, dynamic> toJson() => {
-        "period": period,
-        "subject": subject,
-        "subject_short": subject_short,
-        "room": room,
-        "teacher": teacher,
-        "colour": colour,
+        'period': period,
+        'subject': subject,
+        'subject_short': subject_short,
+        'room': room,
+        'teacher': teacher,
+        'colour': colour,
       };
 }

@@ -22,19 +22,19 @@ class _LoginPageState extends State<LoginPage>
 
   void _saveLogin(String username, String password) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("username", username);
-    prefs.setString("password", password);
+    prefs.setString('username', username);
+    prefs.setString('password', password);
   }
 
   void _resetLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove("username");
-    prefs.remove("password");
+    prefs.remove('username');
+    prefs.remove('password');
   }
 
   Future<String> getLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString("username")! + prefs.getString("password")!;
+    return prefs.getString('username')! + prefs.getString('password')!;
   }
 
   @override
@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage>
                 AnimatedTextKit(
                   animatedTexts: [
                     RotateAnimatedText(
-                      "Welcome to ",
+                      'Welcome to ',
                       textStyle: const TextStyle(
                         fontSize: 25.0,
                       ),
@@ -86,9 +86,9 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 AnimatedTextKit(
                   animatedTexts: [
-                    TyperAnimatedText(""),
+                    TyperAnimatedText(''),
                     TyperAnimatedText(
-                      "re",
+                      're',
                       textStyle: TextStyle(
                         fontSize: 25.0,
                         color: Theme.of(context).colorScheme.primary,
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage>
                 AnimatedTextKit(
                   animatedTexts: [
                     RotateAnimatedText(
-                      "Sentral",
+                      'Sentral',
                       textStyle: const TextStyle(
                         fontSize: 25.0,
                       ),
@@ -122,9 +122,9 @@ class _LoginPageState extends State<LoginPage>
               child: Column(
                 children: [
                   const SizedBox(height: 50.0),
-                  const Text("Login", style: TextStyle(fontSize: 16.0)),
+                  const Text('Login', style: TextStyle(fontSize: 16.0)),
                   const SizedBox(height: 10.0),
-                  Text("Use your sentral login details",
+                  Text('Use your sentral login details',
                       style: TextStyle(
                           fontSize: 12.0,
                           color: Theme.of(context)
@@ -155,8 +155,8 @@ class _LoginPageState extends State<LoginPage>
                   ),
                   TextButton(
                     onPressed: () async {
-                      if (usernameController.text != "" &&
-                          passwordController.text != "") {
+                      if (usernameController.text != '' &&
+                          passwordController.text != '') {
                         _saveLogin(
                           usernameController.text,
                           passwordController.text,
@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage>
                             builder: (context) => const HomePage()));
                       }
                     },
-                    child: const Text("Submit"),
+                    child: const Text('Submit'),
                   ),
                 ],
               ),

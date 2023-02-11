@@ -23,39 +23,39 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         sections: [
           SettingsSection(
-            title: Text("Login and Data"),
+            title: Text('Login and Data'),
             tiles: [
               SettingsTile.navigation(
-                title: Text("Clears All Data"),
+                title: Text('Clears All Data'),
                 onPressed: (context) async {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.clear();
                 },
               ),
               SettingsTile.navigation(
-                title: Text("Change login"),
+                title: Text('Change login'),
                 enabled: false,
               ),
               SettingsTile.navigation(
-                title: Text("Change school"),
-                enabled: false,
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: Text("Appearance"),
-            tiles: [
-              SettingsTile.navigation(
-                title: Text("Accent Colour"),
+                title: Text('Change school'),
                 enabled: false,
               ),
             ],
           ),
           SettingsSection(
-            title: Text("Advanced"),
+            title: Text('Appearance'),
             tiles: [
               SettingsTile.navigation(
-                title: Text("Change API provider/server"),
+                title: Text('Accent Colour'),
+                enabled: false,
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: Text('Advanced'),
+            tiles: [
+              SettingsTile.navigation(
+                title: Text('Change API provider/server'),
                 enabled: false,
               ),
             ],
@@ -65,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0.0,
-        title: Text("Settings",
+        title: Text('Settings',
             style:
                 TextStyle(color: Theme.of(context).colorScheme.onBackground)),
         leading: IconButton(
