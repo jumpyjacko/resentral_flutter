@@ -173,6 +173,12 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: RefreshIndicator(
+        onRefresh: () async {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.remove('daily_timetable');
+          setGetFromPrefs();
+        },
+        color: Theme.of(context).colorScheme.onBackground,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -193,11 +199,6 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
             ],
           ),
         ),
-        onRefresh: () async {
-          final prefs = await SharedPreferences.getInstance();
-          prefs.remove('daily_timetable');
-          setGetFromPrefs();
-        },
       ),
     );
   }
