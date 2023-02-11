@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ota_update/ota_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
 
@@ -95,12 +96,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
+  late OtaEvent currentEvent;
 
   final screens = [
     DailyTimetablePage(key: UniqueKey()),
     AnnouncementsPage(key: UniqueKey()),
     const Center(child: Text('Will be something, don\'t know what though.')),
   ];
+
+  Future<void> tryOtaUpdate() async {
+    try {
+      OtaUpdate()
+          .execute(
+        'https://github.com/JumpyJacko/resentral_flutter/releases/latest/release.apk',
+        destinationFilename: 'release.apk',
+      )
+          .listen(
+        (OtaEvent event) {
+          setState(() => currentEvent = event);
+        },
+      );
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      print('Failed to update. Details: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,9 +202,7 @@ class _HomePageState extends State<HomePage> {
                         builder: (context) => const AboutPage()));
                     break;
                   case 2:
-                    // () => Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => const AboutPage()));
-                    print("pressed check for updates");
+                    tryOtaUpdate();
                     break;
                   default:
                 }
