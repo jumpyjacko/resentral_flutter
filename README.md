@@ -4,4 +4,4 @@ The (new) app for reSentral, a mobile-focused redesign and port of the Sentral s
 Keep in mind that this is an app designed and programmed by a student who is a 100% self taught software developer.
 
 ## Where is it right now?
-It's in a working state, just go to the `releases` page and download the latest releaes. Other than that, not done, very not done.
+It's in a working state, just go to the `releases` page and download the latest releaese. Other than that, not done, very not done.
