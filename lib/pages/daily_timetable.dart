@@ -11,18 +11,19 @@ class DailyTimetablePage extends StatefulWidget {
 }
 
 class _DailyTimetablePageState extends State<DailyTimetablePage> {
-  late Future<DailyTimetable> futureDailyTimetable;
+  Future<DailyTimetable> _futureDailyTimetable =
+      Future<DailyTimetable>.value(DailyTimetable(periods: List.empty()));
   String _username = '';
   String _password = '';
 
-  Widget timetableCards(Future<DailyTimetable> timetable) {
+  Widget timetableCards() {
     List<Widget> list = <Widget>[];
     final rgbRegex = RegExp(r'(\d+), (\d+), (\d+)');
 
     late int red, green, blue;
 
     return FutureBuilder(
-      future: timetable,
+      future: _futureDailyTimetable,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           for (var period in snapshot.data!.periods) {
@@ -96,7 +97,6 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
         } else if (snapshot.hasError) {
           return Text('Try reloading (${snapshot.error})');
         }
-
         return const CircularProgressIndicator();
       },
     );
@@ -155,10 +155,10 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
     if (prefs.getStringList('daily_timetable') == null ||
         prefs.getStringList('daily_timetable')!.isEmpty) {
       _loadPrefs().then((value) =>
-          futureDailyTimetable = fetchDailyTimetable(_username, _password));
+          _futureDailyTimetable = fetchDailyTimetable(_username, _password));
     } else {
-      _loadPrefs()
-          .then((value) => futureDailyTimetable = getDailyTimetableFromPrefs());
+      _loadPrefs().then(
+          (value) => _futureDailyTimetable = getDailyTimetableFromPrefs());
     }
   }
 
@@ -195,7 +195,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
               const SizedBox(
                 height: 40.0,
               ),
-              timetableCards(futureDailyTimetable),
+              timetableCards(),
             ],
           ),
         ),
