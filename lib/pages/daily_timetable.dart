@@ -120,7 +120,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       return DailyTimetable.fromJson(
           jsonDecode(prefs.getStringList('daily_timetable')!.first));
     } else {
-      throw Exception('Failed to fetch from local??');
+      throw Exception('Failed to fetch from local');
     }
   }
 
