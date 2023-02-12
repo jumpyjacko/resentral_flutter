@@ -26,6 +26,9 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       future: _futureDailyTimetable,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data!.periods.isEmpty) {
+            return const CircularProgressIndicator();
+          }
           for (var period in snapshot.data!.periods) {
             if (period.colour.contains('rgb')) {
               var match = rgbRegex.firstMatch(period.colour);
