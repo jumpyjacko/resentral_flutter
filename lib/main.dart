@@ -3,6 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ota_update/ota_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:after_layout/after_layout.dart';
+import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
+
+import 'dart:convert';
 
 import 'package:resentral/pages/daily_timetable.dart';
 import 'package:resentral/pages/announcements.dart';
@@ -105,11 +109,47 @@ class _HomePageState extends State<HomePage> {
   ];
 
   Future<void> tryOtaUpdate() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    late GithubTags remoteVersion;
+
+    final response = await http.get(
+      Uri.parse(
+          'https://api.github.com/repos/jumpyjacko/resentral_flutter/tags'),
+    );
+
+    if (response.statusCode == 200) {
+      remoteVersion = GithubTags.fromJson(jsonDecode(response.body)[0]);
+    } else {
+      throw Exception('Failed to fetch: ${response.statusCode}');
+    }
+
+    if (remoteVersion.name.toString() == packageInfo.version) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'No new update!',
+            style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.background,
+        ),
+      );
+      return;
+    }
+
     try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Downloading update...',
+            style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.background,
+        ),
+      );
       OtaUpdate()
           .execute(
-        'https://github.com/JumpyJacko/resentral_flutter/releases/latest/release.apk',
-        destinationFilename: 'release.apk',
+        'https://github.com/JumpyJacko/resentral_flutter/releases/download/${remoteVersion.name.toString()}/app-release.apk',
+        destinationFilename: 'app-release.apk',
       )
           .listen(
         (OtaEvent event) {
@@ -118,7 +158,7 @@ class _HomePageState extends State<HomePage> {
       );
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
-      print('Failed to update. Details: $e');
+      throw Exception('Failed to update. Details: $e');
     }
   }
 
@@ -212,5 +252,57 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+}
+
+// Auto-generated, check out https://javiercbk.github.io/json_to_dart/
+class GithubTags {
+  String? name;
+  String? zipballUrl;
+  String? tarballUrl;
+  Commit? commit;
+  String? nodeId;
+
+  GithubTags(
+      {this.name, this.zipballUrl, this.tarballUrl, this.commit, this.nodeId});
+
+  GithubTags.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    zipballUrl = json['zipball_url'];
+    tarballUrl = json['tarball_url'];
+    commit =
+        json['commit'] != null ? new Commit.fromJson(json['commit']) : null;
+    nodeId = json['node_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['zipball_url'] = this.zipballUrl;
+    data['tarball_url'] = this.tarballUrl;
+    if (this.commit != null) {
+      data['commit'] = this.commit!.toJson();
+    }
+    data['node_id'] = this.nodeId;
+    return data;
+  }
+}
+
+class Commit {
+  String? sha;
+  String? url;
+
+  Commit({this.sha, this.url});
+
+  Commit.fromJson(Map<String, dynamic> json) {
+    sha = json['sha'];
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['sha'] = this.sha;
+    data['url'] = this.url;
+    return data;
   }
 }
