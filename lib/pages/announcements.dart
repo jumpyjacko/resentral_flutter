@@ -16,7 +16,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   String _username = '';
   String _password = '';
 
-  Widget timetableCards() {
+  Widget announcementCards() {
     List<Widget> list = <Widget>[];
 
     return FutureBuilder(
@@ -93,7 +93,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     });
   }
 
-  Future<Announcements> getDailyTimetableFromPrefs() async {
+  Future<Announcements> getAnnouncementsFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('announcements') != null) {
       return Announcements.fromJson(
@@ -103,7 +103,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     }
   }
 
-  Future<Announcements> fetchDailyTimetable(
+  Future<Announcements> fetchAnnouncements(
       String username, String password) async {
     final prefs = await SharedPreferences.getInstance();
     final response = await http.post(
@@ -137,10 +137,10 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     if (prefs.getStringList('announcements') == null ||
         prefs.getStringList('announcements')!.isEmpty) {
       _loadPrefs().then((value) =>
-          _futureAnnouncements = fetchDailyTimetable(_username, _password));
+          _futureAnnouncements = fetchAnnouncements(_username, _password));
     } else {
       _loadPrefs()
-          .then((value) => _futureAnnouncements = getDailyTimetableFromPrefs());
+          .then((value) => _futureAnnouncements = getAnnouncementsFromPrefs());
     }
   }
 
@@ -177,11 +177,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
               const SizedBox(
                 height: 40.0,
               ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [],
-              )
+              announcementCards(),
             ],
           ),
         ),
