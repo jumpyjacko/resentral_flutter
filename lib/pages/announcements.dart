@@ -47,12 +47,12 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Test Title',
+                        Text(
+                          announcement.name,
                           style: TextStyle(fontSize: 24.0),
                         ),
                         Text(
-                          'John Doe.',
+                          announcement.teacher,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Theme.of(context)
@@ -61,8 +61,8 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                                 .withAlpha(175),
                           ),
                         ),
-                        const Text(
-                          'lots of text, and more text, and possible even more text, maybe too much text',
+                        Text(
+                          announcement.body,
                           style: TextStyle(
                             fontSize: 14.0,
                           ),
