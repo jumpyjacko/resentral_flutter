@@ -25,9 +25,9 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
       future: _futureAnnouncements,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // if (snapshot.data!.announcements.isEmpty) {
-          //   return const CircularProgressIndicator();
-          // }
+          if (snapshot.data!.announcements.isEmpty) {
+            return const CircularProgressIndicator();
+          }
           for (var announcement in snapshot.data!.announcements) {
             list.add(
               InkWell(

@@ -148,6 +148,10 @@ class _HomePageState extends State<HomePage> {
             'There\'s a new update!',
             style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
           ),
+          action: SnackBarAction(
+            label: 'Update',
+            onPressed: () => tryOtaUpdate(),
+          ),
           backgroundColor: Theme.of(context).colorScheme.background,
         ),
       );
