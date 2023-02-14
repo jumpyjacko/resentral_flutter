@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.openSansTextTheme(
           Theme.of(context).textTheme.apply(bodyColor: Colors.black),
         ),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         colorScheme: ColorScheme.light(
           background: Colors.grey.shade50,
           onBackground: Colors.black,
@@ -43,6 +45,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.openSansTextTheme(
           Theme.of(context).textTheme.apply(bodyColor: Colors.white),
         ),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         colorScheme: ColorScheme.dark(
           background: const Color.fromARGB(255, 27, 27, 27),
           onBackground: Colors.white,
