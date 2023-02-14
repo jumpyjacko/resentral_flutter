@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:resentral/pages/announcements_page.dart';
+
 class AnnouncementsPage extends StatefulWidget {
   const AnnouncementsPage({super.key});
 
@@ -43,13 +45,13 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                         ),
                       ),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           announcement.title,
-                          style: TextStyle(fontSize: 24.0),
+                          style: const TextStyle(fontSize: 24.0),
                         ),
                         Text(
                           announcement.name,
@@ -61,10 +63,10 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                                 .withAlpha(175),
                           ),
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         Text(
                           announcement.body,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14.0,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -73,7 +75,14 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AnnouncementsChildPage(
+                            title: announcement.title,
+                            name: announcement.name,
+                            body: announcement.body,
+                          )));
+                },
               ),
             );
           }
