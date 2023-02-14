@@ -33,8 +33,8 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.symmetric(
-                        horizontal: BorderSide(
+                      border: Border(
+                        bottom: BorderSide(
                           width: 1.0,
                           color: Theme.of(context)
                               .colorScheme
@@ -48,11 +48,11 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          announcement.name,
+                          announcement.title,
                           style: TextStyle(fontSize: 24.0),
                         ),
                         Text(
-                          announcement.teacher,
+                          announcement.name,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Theme.of(context)
@@ -61,6 +61,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                                 .withAlpha(175),
                           ),
                         ),
+                        SizedBox(height: 10.0),
                         Text(
                           announcement.body,
                           style: TextStyle(
@@ -157,7 +158,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           final prefs = await SharedPreferences.getInstance();
-          prefs.remove('daily_timetable');
+          prefs.remove('announcements');
           setGetFromPrefs();
         },
         color: Theme.of(context).colorScheme.onBackground,
@@ -207,23 +208,23 @@ class Announcements {
 class Announcement {
   const Announcement({
     required this.name,
-    required this.teacher,
+    required this.title,
     required this.body,
   });
 
   final String name;
-  final String teacher;
+  final String title;
   final String body;
 
   factory Announcement.fromJson(Map<String, dynamic> json) => Announcement(
         name: json['name'],
-        teacher: json['teacher'],
+        title: json['title'],
         body: json['body'],
       );
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'teacher': teacher,
+        'title': title,
         'body': body,
       };
 }
