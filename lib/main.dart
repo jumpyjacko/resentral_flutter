@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
     const Center(child: Text('Will be something, don\'t know what though.')),
   ];
 
-  Future<void> tryOtaUpdate() async {
+  Future<String> checkUpdateExists() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     late GithubTags remoteVersion;
 
@@ -133,6 +133,14 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Theme.of(context).colorScheme.background,
         ),
       );
+      return '';
+    }
+    return remoteVersion.name.toString();
+  }
+
+  Future<void> tryOtaUpdate() async {
+    final update = await checkUpdateExists();
+    if (update.isEmpty) {
       return;
     }
 
@@ -148,7 +156,7 @@ class _HomePageState extends State<HomePage> {
       );
       OtaUpdate()
           .execute(
-        'https://github.com/JumpyJacko/resentral_flutter/releases/download/${remoteVersion.name.toString()}/app-release.apk',
+        'https://github.com/JumpyJacko/resentral_flutter/releases/download/$update/app-release.apk',
         destinationFilename: 'app-release.apk',
       )
           .listen(
