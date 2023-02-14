@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
     const Center(child: Text('Will be something, don\'t know what though.')),
   ];
 
-  Future<String> checkUpdateExists() async {
+  Future<String> checkUpdateExists(bool startup) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     late GithubTags remoteVersion;
 
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
       throw Exception('Failed to fetch: ${response.statusCode}');
     }
 
-    if (remoteVersion.name.toString() == packageInfo.version) {
+    if (remoteVersion.name.toString() == packageInfo.version && !startup) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -134,12 +134,25 @@ class _HomePageState extends State<HomePage> {
         ),
       );
       return '';
+    } else if (remoteVersion.name.toString() == packageInfo.version &&
+        startup) {
+      return '';
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'There\'s a new update!',
+            style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.background,
+        ),
+      );
+      return remoteVersion.name.toString();
     }
-    return remoteVersion.name.toString();
   }
 
   Future<void> tryOtaUpdate() async {
-    final update = await checkUpdateExists();
+    final update = await checkUpdateExists(false);
     if (update.isEmpty) {
       return;
     }
@@ -168,6 +181,12 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       throw Exception('Failed to update. Details: $e');
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkUpdateExists(true);
   }
 
   @override
