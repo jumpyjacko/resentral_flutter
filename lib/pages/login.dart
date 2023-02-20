@@ -164,7 +164,6 @@ class _LoginPageState extends State<LoginPage>
                     padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
                     child: TextField(
                       controller: websiteController,
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
                         labelText: 'Website/Sentral URL',
