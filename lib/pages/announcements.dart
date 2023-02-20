@@ -17,6 +17,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
       Future<Announcements>.value(Announcements(announcements: List.empty()));
   String _username = '';
   String _password = '';
+  String _website = '';
 
   Widget announcementCards() {
     List<Widget> list = <Widget>[];
@@ -100,6 +101,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     setState(() {
       _username = (prefs.getString('username') ?? '');
       _password = (prefs.getString('password') ?? '');
+      _website = (prefs.getString('website') ?? '');
     });
   }
 
@@ -114,7 +116,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   }
 
   Future<Announcements> fetchAnnouncements(
-      String username, String password) async {
+      String username, String password, String website) async {
     final prefs = await SharedPreferences.getInstance();
     final response = await http.post(
       Uri.parse('https://resentral-server.onrender.com/announcements'),
@@ -124,6 +126,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
       body: jsonEncode(<String, String>{
         'username': username,
         'password': password,
+        'website': website,
       }),
     );
     if (response.statusCode == 200) {
@@ -146,8 +149,8 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
 
     if (prefs.getStringList('announcements') == null ||
         prefs.getStringList('announcements')!.isEmpty) {
-      _loadPrefs().then((value) =>
-          _futureAnnouncements = fetchAnnouncements(_username, _password));
+      _loadPrefs().then((value) => _futureAnnouncements =
+          fetchAnnouncements(_username, _password, _website));
     } else {
       _loadPrefs()
           .then((value) => _futureAnnouncements = getAnnouncementsFromPrefs());

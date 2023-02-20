@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController websiteController = TextEditingController();
 
   late AnimationController controller;
   late Animation loginOpenAnimation;
@@ -24,6 +25,11 @@ class _LoginPageState extends State<LoginPage>
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('username', username);
     prefs.setString('password', password);
+  }
+
+  void _setSchoolWebsite(String website) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('website', website);
   }
 
   void _resetLogin() async {
@@ -56,6 +62,7 @@ class _LoginPageState extends State<LoginPage>
     // Clean up the controller when the widget is disposed.
     usernameController.dispose();
     passwordController.dispose();
+    websiteController.dispose();
     super.dispose();
   }
 
@@ -153,14 +160,28 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
+                    child: TextField(
+                      controller: websiteController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'Website/Sentral URL',
+                        hintText: '',
+                      ),
+                    ),
+                  ),
                   TextButton(
                     onPressed: () async {
                       if (usernameController.text != '' &&
-                          passwordController.text != '') {
+                          passwordController.text != '' &&
+                          websiteController.text != '') {
                         _saveLogin(
                           usernameController.text,
                           passwordController.text,
                         );
+                        _setSchoolWebsite(websiteController.text);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const HomePage()));
                       }

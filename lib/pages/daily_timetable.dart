@@ -15,6 +15,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       Future<DailyTimetable>.value(DailyTimetable(periods: List.empty()));
   String _username = '';
   String _password = '';
+  String _website = '';
 
   Widget timetableCards() {
     List<Widget> list = <Widget>[];
@@ -111,6 +112,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
     setState(() {
       _username = (prefs.getString('username') ?? '');
       _password = (prefs.getString('password') ?? '');
+      _website = (prefs.getString('website') ?? '');
     });
   }
 
@@ -125,7 +127,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
   }
 
   Future<DailyTimetable> fetchDailyTimetable(
-      String username, String password) async {
+      String username, String password, String website) async {
     final prefs = await SharedPreferences.getInstance();
     final response = await http.post(
       Uri.parse('https://resentral-server.onrender.com/daily_timetable'),
@@ -135,6 +137,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       body: jsonEncode(<String, String>{
         'username': username,
         'password': password,
+        'website': website,
       }),
     );
     if (response.statusCode == 200) {
@@ -157,8 +160,8 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
 
     if (prefs.getStringList('daily_timetable') == null ||
         prefs.getStringList('daily_timetable')!.isEmpty) {
-      _loadPrefs().then((value) =>
-          _futureDailyTimetable = fetchDailyTimetable(_username, _password));
+      _loadPrefs().then((value) => _futureDailyTimetable =
+          fetchDailyTimetable(_username, _password, _website));
     } else {
       _loadPrefs().then(
           (value) => _futureDailyTimetable = getDailyTimetableFromPrefs());

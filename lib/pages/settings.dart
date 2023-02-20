@@ -10,6 +10,59 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final TextEditingController websiteController = TextEditingController();
+
+  void _setSchoolWebsite(String website) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('website', website);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    websiteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _popupSchoolWebsite() async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            title: const Text('Change school website'),
+            content: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: TextField(
+                controller: websiteController,
+                decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Sentral URL',
+                    hintText: ''),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  if (websiteController.text != '') {
+                    _setSchoolWebsite(websiteController.text);
+                  }
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Submit'),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +86,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
               SettingsTile.navigation(
-                title: const Text('Change login'),
+                title: const Text('Change Login'),
                 enabled: false,
               ),
               SettingsTile.navigation(
-                title: const Text('Change school'),
-                enabled: false,
+                title: const Text('Change School/Sentral Website'),
+                onPressed: (context) async {
+                  _popupSchoolWebsite();
+                },
               ),
             ],
           ),
@@ -55,7 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Advanced'),
             tiles: [
               SettingsTile.navigation(
-                title: const Text('Change API provider/server'),
+                title: const Text('Change API Provider/Server'),
                 enabled: false,
               ),
             ],
