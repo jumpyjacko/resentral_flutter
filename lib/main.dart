@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import 'package:resentral/pages/daily_timetable.dart';
 import 'package:resentral/pages/announcements.dart';
+import 'package:resentral/pages/full_timetable.dart';
 import 'package:resentral/pages/settings.dart';
 import 'package:resentral/pages/login.dart';
 import 'package:resentral/pages/about.dart';
@@ -109,7 +110,7 @@ class _HomePageState extends State<HomePage> {
   final screens = [
     DailyTimetablePage(key: UniqueKey()),
     AnnouncementsPage(key: UniqueKey()),
-    const Center(child: Text('Will be something, don\'t know what though.')),
+    FullTimetablePage(key: UniqueKey()),
   ];
 
   Future<String> checkUpdateExists(bool startup) async {
@@ -228,9 +229,9 @@ class _HomePageState extends State<HomePage> {
                 label: 'Announcements',
               ),
               NavigationDestination(
-                icon: Icon(Icons.notifications_outlined),
-                selectedIcon: Icon(Icons.notifications),
-                label: 'Something',
+                icon: Icon(Icons.view_timeline_outlined),
+                selectedIcon: Icon(Icons.view_timeline),
+                label: 'Full Timetable',
               ),
             ],
           ),
