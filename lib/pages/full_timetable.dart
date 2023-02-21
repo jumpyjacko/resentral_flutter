@@ -23,7 +23,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
     List<Widget> list = <Widget>[];
     final rgbRegex = RegExp(r'(\d+), (\d+), (\d+)');
 
-    late int red, green, blue;
+    late int red, green, blue, marker_height;
 
     return FutureBuilder(
       future: _futureFullTimetable,
@@ -43,28 +43,69 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                   red = int.parse(match!.group(1).toString());
                   green = int.parse(match.group(2).toString());
                   blue = int.parse(match.group(3).toString());
+                  marker_height = 50;
                 } else {
                   red = 100;
                   green = 100;
                   blue = 100;
+                  marker_height = 18;
                 }
 
-                periodList.add(Container(
-                  width: 10.0,
-                  height: 10.0,
-                  color: Color.fromARGB(255, red, green, blue),
+                periodList.add(Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          "1",
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onBackground
+                                  .withAlpha(100)),
+                        ),
+                      ),
+                      Container(
+                        width: 5.0,
+                        height: marker_height.toDouble(),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, red, green, blue),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          period.subject_short,
+                          style: TextStyle(fontSize: 14.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 ));
               }
               dayList.add(Column(
                 children: periodList,
               ));
             }
-            weekList.add(Row(
-              children: dayList,
+            weekList.add(SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: dayList,
+              ),
             ));
+            weekList.add(SizedBox(height: 30.0));
           }
-          return Column(
-            children: weekList,
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: weekList,
+            ),
           );
         } else if (snapshot.hasError) {
           return Text('Try reloading (${snapshot.error})');

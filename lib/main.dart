@@ -20,6 +20,23 @@ void main() {
   runApp(const MyApp());
 }
 
+class ScrollBehaviorModified extends ScrollBehavior {
+  const ScrollBehaviorModified();
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    switch (getPlatform(context)) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+      case TargetPlatform.android:
+        return const BouncingScrollPhysics();
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return const ClampingScrollPhysics();
+    }
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -57,6 +74,10 @@ class MyApp extends StatelessWidget {
           secondary: Colors.blue.shade50,
         ),
       ),
+      builder: (context, widget) {
+        return ScrollConfiguration(
+            behavior: ScrollBehaviorModified(), child: widget!);
+      },
       home: Splash(),
     );
   }
