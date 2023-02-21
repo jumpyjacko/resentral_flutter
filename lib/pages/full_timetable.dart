@@ -29,6 +29,9 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
       future: _futureFullTimetable,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data!.weeks.isEmpty) {
+            return const CircularProgressIndicator();
+          }
           List<Widget> weekList = <Widget>[];
           for (var week in snapshot.data!.weeks) {
             List<Widget> dayList = <Widget>[];
