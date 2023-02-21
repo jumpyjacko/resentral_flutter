@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ota_update/ota_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -239,6 +240,10 @@ class _HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Theme.of(context).colorScheme.background,
+          systemNavigationBarColor: Theme.of(context).colorScheme.background,
+        ),
         elevation: 0.0,
         leading: IconButton(
           icon: const Icon(Icons.settings),
