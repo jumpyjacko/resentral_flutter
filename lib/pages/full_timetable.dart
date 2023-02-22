@@ -24,7 +24,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
     List<Widget> list = <Widget>[];
     final rgbRegex = RegExp(r'(\d+), (\d+), (\d+)');
 
-    late int red, green, blue, marker_height;
+    late int red, green, blue, markerHeight;
 
     return FutureBuilder(
       future: _futureFullTimetable,
@@ -44,12 +44,12 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                   red = int.parse(match!.group(1).toString());
                   green = int.parse(match.group(2).toString());
                   blue = int.parse(match.group(3).toString());
-                  marker_height = 70;
+                  markerHeight = 70;
                 } else {
                   red = 100;
                   green = 100;
                   blue = 100;
-                  marker_height = 20;
+                  markerHeight = 20;
                 }
 
                 periodList.add(Padding(
@@ -57,7 +57,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.15,
+                        width: MediaQuery.of(context).size.width * 0.2,
                         child: Text(
                           period.period,
                           textAlign: TextAlign.center,
@@ -72,7 +72,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                       ),
                       Container(
                         width: 5.0,
-                        height: marker_height.toDouble(),
+                        height: markerHeight.toDouble(),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, red, green, blue),
                           borderRadius: BorderRadius.circular(5),
@@ -122,7 +122,8 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
               periodList.insert(
                 0,
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 14.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 22.0, vertical: 10.0),
                   child: Text(
                     day.day,
                     textAlign: TextAlign.center,
@@ -293,7 +294,7 @@ class Week {
       ));
 
   Map<String, dynamic> toJson() => {
-        'dayss': List<dynamic>.from(days.map((x) => x.toJson())),
+        'days': List<dynamic>.from(days.map((x) => x.toJson())),
       };
 }
 
