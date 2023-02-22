@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage>
                       decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
                         labelText: 'Website/Sentral URL',
-                        hintText: '',
+                        hintText: 'Include /portal/login at the end of the url',
                       ),
                     ),
                   ),
