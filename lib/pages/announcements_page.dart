@@ -18,30 +18,32 @@ class AnnouncementsChildPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 30.0),
-            Text(
-              this._title,
-              style: const TextStyle(fontSize: 24.0),
-            ),
-            Text(
-              this._name,
-              style: TextStyle(
-                fontSize: 12.0,
-                color:
-                    Theme.of(context).colorScheme.onBackground.withAlpha(175),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 30.0),
+              Text(
+                this._title,
+                style: const TextStyle(fontSize: 24.0),
               ),
-            ),
-            const SizedBox(height: 10.0),
-            Text(
-              this._body,
-              style: const TextStyle(fontSize: 15.0),
-            ),
-          ],
+              Text(
+                this._name,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color:
+                      Theme.of(context).colorScheme.onBackground.withAlpha(175),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                this._body,
+                style: const TextStyle(fontSize: 15.0),
+              ),
+            ],
+          ),
         ),
       ),
       appBar: AppBar(
