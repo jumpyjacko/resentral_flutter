@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,29 +44,30 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                   red = int.parse(match!.group(1).toString());
                   green = int.parse(match.group(2).toString());
                   blue = int.parse(match.group(3).toString());
-                  marker_height = 50;
+                  marker_height = 70;
                 } else {
                   red = 100;
                   green = 100;
                   blue = 100;
-                  marker_height = 18;
+                  marker_height = 20;
                 }
 
                 periodList.add(Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.15,
                         child: Text(
-                          "1",
+                          period.period,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14.0,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onBackground
-                                  .withAlpha(100)),
+                            fontSize: 14.0,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withAlpha(150),
+                          ),
                         ),
                       ),
                       Container(
@@ -76,18 +78,66 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text(
-                          period.subject_short,
-                          style: TextStyle(fontSize: 14.0),
-                        ),
-                      ),
+                      period.colour.isEmpty
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    period.subject_short
+                                        .replaceAll(RegExp(r'[()]'), ''),
+                                    style: const TextStyle(fontSize: 14.0),
+                                  ),
+                                  Text(
+                                    period.room,
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground
+                                          .withAlpha(150),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    period.teacher,
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground
+                                          .withAlpha(150),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                     ],
                   ),
                 ));
               }
+              periodList.insert(
+                0,
+                Container(
+                  child: Text(
+                    day.day,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withAlpha(150),
+                    ),
+                  ),
+                ),
+              );
               dayList.add(Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: periodList,
               ));
             }
@@ -99,7 +149,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                 children: dayList,
               ),
             ));
-            weekList.add(SizedBox(height: 30.0));
+            weekList.add(SizedBox(height: 75.0));
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -253,8 +303,7 @@ class Day {
   });
 
   final List<Period> periods;
-  // final String day;
-  final int day;
+  final String day;
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
         periods:
