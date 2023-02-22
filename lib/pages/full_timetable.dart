@@ -122,6 +122,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
               periodList.insert(
                 0,
                 Container(
+                  padding: EdgeInsets.symmetric(horizontal: 14.0),
                   child: Text(
                     day.day,
                     textAlign: TextAlign.center,
