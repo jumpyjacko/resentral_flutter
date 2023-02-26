@@ -30,6 +30,20 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
             return const CircularProgressIndicator();
           }
           for (var announcement in snapshot.data!.announcements) {
+            if (announcement.name == "Empty") {
+              list.add(Column(
+                children: [
+                  const Text(
+                    "No announcements available!\n\nPull down to refresh.",
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.55,
+                  ),
+                ],
+              ));
+              break;
+            }
             list.add(
               InkWell(
                 child: SizedBox(
