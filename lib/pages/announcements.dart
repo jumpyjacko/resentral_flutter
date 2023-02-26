@@ -147,6 +147,9 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
       prefs.setStringList(
           'announcements', [response.body, DateTime.now().toString()]);
       return Announcements.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 502) {
+      throw Exception(
+          'Failed to fetch: ${response.statusCode}\nCheck if your login/website is correct');
     } else {
       throw Exception('Failed to fetch: ${response.statusCode}');
     }

@@ -144,6 +144,9 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
       prefs.setStringList(
           'daily_timetable', [response.body, DateTime.now().toString()]);
       return DailyTimetable.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 502) {
+      throw Exception(
+          'Failed to fetch: ${response.statusCode}\nCheck if your login/website is correct');
     } else {
       throw Exception('Failed to fetch: ${response.statusCode}');
     }

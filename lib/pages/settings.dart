@@ -11,16 +11,26 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController websiteController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void _setSchoolWebsite(String website) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('website', website);
   }
 
+  void _setLogin(String username, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', username);
+    prefs.setString('password', password);
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     websiteController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -63,6 +73,59 @@ class _SettingsPageState extends State<SettingsPage> {
         });
   }
 
+  Future<void> _popupLogin() async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            title: const Text('Change login'),
+            content: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: usernameController,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Username',
+                    ),
+                  ),
+                  TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Password',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  if (usernameController.text != '' &&
+                      passwordController.text != '') {
+                    _setLogin(usernameController.text, passwordController.text);
+                  }
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Submit'),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +150,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SettingsTile.navigation(
                 title: const Text('Change Login'),
-                enabled: false,
+                onPressed: (context) async {
+                  _popupLogin();
+                },
               ),
               SettingsTile.navigation(
                 title: const Text('Change School/Sentral Website'),
