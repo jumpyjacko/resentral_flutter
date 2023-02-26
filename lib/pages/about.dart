@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
@@ -9,6 +10,25 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
+  late String version;
+  late String packageName;
+  late String appName;
+
+  void getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      version = packageInfo.version.toString();
+      packageName = packageInfo.packageName.toString();
+      appName = packageInfo.appName.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getVersion();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +65,19 @@ class _AboutPageState extends State<AboutPage> {
                       'https://github.com/JumpyJacko/resentral_flutter')),
                 )
               ],
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "Running reSentral version $version\n\nPackage name: $packageName\nApp Name: $appName",
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withAlpha(100)),
+                ),
+              ),
             ),
           ],
         ),
