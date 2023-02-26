@@ -34,6 +34,39 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
+  Future<void> _popupClearConfirm() async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            title: const Text('Confirm data flush'),
+            content: const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                  'Are you sure you want to clear all your data?\n\n(this will send you back to the setup page on next startup)'),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.clear();
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Flush Data'),
+              ),
+            ],
+          );
+        });
+  }
+
   Future<void> _popupSchoolWebsite() async {
     return showDialog<void>(
         context: context,
@@ -142,10 +175,9 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Login and Data'),
             tiles: [
               SettingsTile.navigation(
-                title: const Text('Clears All Data'),
+                title: const Text('Clear All Data'),
                 onPressed: (context) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  prefs.clear();
+                  _popupClearConfirm();
                 },
               ),
               SettingsTile.navigation(
