@@ -72,7 +72,7 @@ class _DailyTimetablePageState extends State<DailyTimetablePage> {
                             style: const TextStyle(fontSize: 14),
                           ),
                           Text(
-                            period.subject_short,
+                            period.subjectShort,
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Theme.of(context)
@@ -231,7 +231,7 @@ class Period {
   const Period({
     required this.period,
     required this.subject,
-    required this.subject_short,
+    required this.subjectShort,
     required this.room,
     required this.teacher,
     required this.colour,
@@ -239,7 +239,7 @@ class Period {
 
   final String period;
   final String subject;
-  final String subject_short;
+  final String subjectShort;
   final String room;
   final String teacher;
   final String colour;
@@ -247,7 +247,7 @@ class Period {
   factory Period.fromJson(Map<String, dynamic> json) => Period(
         period: json['period'],
         subject: json['subject'],
-        subject_short: json['subject_short'],
+        subjectShort: json['subject_short'],
         room: json['room'],
         teacher: json['teacher'],
         colour: json['colour'],
@@ -256,7 +256,7 @@ class Period {
   Map<String, dynamic> toJson() => {
         'period': period,
         'subject': subject,
-        'subject_short': subject_short,
+        'subject_short': subjectShort,
         'room': room,
         'teacher': teacher,
         'colour': colour,

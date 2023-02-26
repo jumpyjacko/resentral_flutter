@@ -192,7 +192,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
+                padding: const EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0),
                 alignment: Alignment.topLeft,
                 child: const Text(
                   'Announcements',

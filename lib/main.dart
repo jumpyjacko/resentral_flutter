@@ -347,15 +347,15 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context) => [
                 const PopupMenuItem(
                   value: 1,
-                  child: const Text("About"),
+                  child: Text("About"),
                 ),
                 const PopupMenuItem(
                   value: 2,
-                  child: const Text("Check for Updates"),
+                  child: Text("Check for Updates"),
                 ),
                 const PopupMenuItem(
                   value: 3,
-                  child: const Text("Changelogs"),
+                  child: Text("Changelogs"),
                 ),
               ],
               offset: Offset(0, AppBar().preferredSize.height),
@@ -397,20 +397,19 @@ class GithubTags {
     name = json['name'];
     zipballUrl = json['zipball_url'];
     tarballUrl = json['tarball_url'];
-    commit =
-        json['commit'] != null ? new Commit.fromJson(json['commit']) : null;
+    commit = json['commit'] != null ? Commit.fromJson(json['commit']) : null;
     nodeId = json['node_id'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['zipball_url'] = this.zipballUrl;
-    data['tarball_url'] = this.tarballUrl;
-    if (this.commit != null) {
-      data['commit'] = this.commit!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['zipball_url'] = zipballUrl;
+    data['tarball_url'] = tarballUrl;
+    if (commit != null) {
+      data['commit'] = commit!.toJson();
     }
-    data['node_id'] = this.nodeId;
+    data['node_id'] = nodeId;
     return data;
   }
 }
@@ -427,9 +426,9 @@ class Commit {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sha'] = this.sha;
-    data['url'] = this.url;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['sha'] = sha;
+    data['url'] = url;
     return data;
   }
 }
@@ -481,8 +480,7 @@ class GithubReleaseLatest {
     uploadUrl = json['upload_url'];
     htmlUrl = json['html_url'];
     id = json['id'];
-    author =
-        json['author'] != null ? new Author.fromJson(json['author']) : null;
+    author = json['author'] != null ? Author.fromJson(json['author']) : null;
     nodeId = json['node_id'];
     tagName = json['tag_name'];
     targetCommitish = json['target_commitish'];
@@ -494,7 +492,7 @@ class GithubReleaseLatest {
     if (json['assets'] != null) {
       assets = <Assets>[];
       json['assets'].forEach((v) {
-        assets!.add(new Assets.fromJson(v));
+        assets!.add(Assets.fromJson(v));
       });
     }
     tarballUrl = json['tarball_url'];
@@ -503,29 +501,29 @@ class GithubReleaseLatest {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['assets_url'] = this.assetsUrl;
-    data['upload_url'] = this.uploadUrl;
-    data['html_url'] = this.htmlUrl;
-    data['id'] = this.id;
-    if (this.author != null) {
-      data['author'] = this.author!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    data['assets_url'] = assetsUrl;
+    data['upload_url'] = uploadUrl;
+    data['html_url'] = htmlUrl;
+    data['id'] = id;
+    if (author != null) {
+      data['author'] = author!.toJson();
     }
-    data['node_id'] = this.nodeId;
-    data['tag_name'] = this.tagName;
-    data['target_commitish'] = this.targetCommitish;
-    data['name'] = this.name;
-    data['draft'] = this.draft;
-    data['prerelease'] = this.prerelease;
-    data['created_at'] = this.createdAt;
-    data['published_at'] = this.publishedAt;
-    if (this.assets != null) {
-      data['assets'] = this.assets!.map((v) => v.toJson()).toList();
+    data['node_id'] = nodeId;
+    data['tag_name'] = tagName;
+    data['target_commitish'] = targetCommitish;
+    data['name'] = name;
+    data['draft'] = draft;
+    data['prerelease'] = prerelease;
+    data['created_at'] = createdAt;
+    data['published_at'] = publishedAt;
+    if (assets != null) {
+      data['assets'] = assets!.map((v) => v.toJson()).toList();
     }
-    data['tarball_url'] = this.tarballUrl;
-    data['zipball_url'] = this.zipballUrl;
-    data['body'] = this.body;
+    data['tarball_url'] = tarballUrl;
+    data['zipball_url'] = zipballUrl;
+    data['body'] = body;
     return data;
   }
 }
@@ -592,25 +590,25 @@ class Author {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['login'] = this.login;
-    data['id'] = this.id;
-    data['node_id'] = this.nodeId;
-    data['avatar_url'] = this.avatarUrl;
-    data['gravatar_id'] = this.gravatarId;
-    data['url'] = this.url;
-    data['html_url'] = this.htmlUrl;
-    data['followers_url'] = this.followersUrl;
-    data['following_url'] = this.followingUrl;
-    data['gists_url'] = this.gistsUrl;
-    data['starred_url'] = this.starredUrl;
-    data['subscriptions_url'] = this.subscriptionsUrl;
-    data['organizations_url'] = this.organizationsUrl;
-    data['repos_url'] = this.reposUrl;
-    data['events_url'] = this.eventsUrl;
-    data['received_events_url'] = this.receivedEventsUrl;
-    data['type'] = this.type;
-    data['site_admin'] = this.siteAdmin;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['login'] = login;
+    data['id'] = id;
+    data['node_id'] = nodeId;
+    data['avatar_url'] = avatarUrl;
+    data['gravatar_id'] = gravatarId;
+    data['url'] = url;
+    data['html_url'] = htmlUrl;
+    data['followers_url'] = followersUrl;
+    data['following_url'] = followingUrl;
+    data['gists_url'] = gistsUrl;
+    data['starred_url'] = starredUrl;
+    data['subscriptions_url'] = subscriptionsUrl;
+    data['organizations_url'] = organizationsUrl;
+    data['repos_url'] = reposUrl;
+    data['events_url'] = eventsUrl;
+    data['received_events_url'] = receivedEventsUrl;
+    data['type'] = type;
+    data['site_admin'] = siteAdmin;
     return data;
   }
 }
@@ -620,7 +618,7 @@ class Assets {
   int? id;
   String? nodeId;
   String? name;
-  Null? label;
+  Null label;
   Author? uploader;
   String? contentType;
   String? state;
@@ -652,7 +650,7 @@ class Assets {
     name = json['name'];
     label = json['label'];
     uploader =
-        json['uploader'] != null ? new Author.fromJson(json['uploader']) : null;
+        json['uploader'] != null ? Author.fromJson(json['uploader']) : null;
     contentType = json['content_type'];
     state = json['state'];
     size = json['size'];
@@ -663,22 +661,22 @@ class Assets {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['id'] = this.id;
-    data['node_id'] = this.nodeId;
-    data['name'] = this.name;
-    data['label'] = this.label;
-    if (this.uploader != null) {
-      data['uploader'] = this.uploader!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    data['id'] = id;
+    data['node_id'] = nodeId;
+    data['name'] = name;
+    data['label'] = label;
+    if (uploader != null) {
+      data['uploader'] = uploader!.toJson();
     }
-    data['content_type'] = this.contentType;
-    data['state'] = this.state;
-    data['size'] = this.size;
-    data['download_count'] = this.downloadCount;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['browser_download_url'] = this.browserDownloadUrl;
+    data['content_type'] = contentType;
+    data['state'] = state;
+    data['size'] = size;
+    data['download_count'] = downloadCount;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['browser_download_url'] = browserDownloadUrl;
     return data;
   }
 }

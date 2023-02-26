@@ -26,11 +26,11 @@ class AnnouncementsChildPage extends StatelessWidget {
             children: [
               const SizedBox(height: 30.0),
               Text(
-                this._title,
+                _title,
                 style: const TextStyle(fontSize: 24.0),
               ),
               Text(
-                this._name,
+                _name,
                 style: TextStyle(
                   fontSize: 12.0,
                   color:
@@ -39,7 +39,7 @@ class AnnouncementsChildPage extends StatelessWidget {
               ),
               const SizedBox(height: 10.0),
               Text(
-                this._body,
+                _body,
                 style: const TextStyle(fontSize: 15.0),
               ),
             ],

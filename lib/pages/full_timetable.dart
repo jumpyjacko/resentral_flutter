@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +20,6 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
   String _website = '';
 
   Widget timetableCards() {
-    List<Widget> list = <Widget>[];
     final rgbRegex = RegExp(r'(\d+), (\d+), (\d+)');
 
     late int red, green, blue, markerHeight;
@@ -87,7 +85,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    period.subject_short
+                                    period.subjectShort
                                         .replaceAll(RegExp(r'[()]'), ''),
                                     style: const TextStyle(fontSize: 14.0),
                                   ),
@@ -151,7 +149,7 @@ class _FullTimetablePageState extends State<FullTimetablePage> {
                 children: dayList,
               ),
             ));
-            weekList.add(SizedBox(height: 75.0));
+            weekList.add(const SizedBox(height: 75.0));
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
