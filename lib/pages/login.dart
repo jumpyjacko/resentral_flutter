@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:resentral/main.dart';
 
@@ -137,6 +138,15 @@ class _LoginPageState extends State<LoginPage>
                               .colorScheme
                               .onBackground
                               .withAlpha(150))),
+                  InkWell(
+                    child: Text('Need help?',
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            color: Theme.of(context).colorScheme.primary,
+                            decoration: TextDecoration.underline)),
+                    onTap: () => launchUrl(Uri.parse(
+                        'https://github.com/JumpyJacko/resentral_flutter/wiki/Setup')),
+                  ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 10.0),
                     child: TextField(
