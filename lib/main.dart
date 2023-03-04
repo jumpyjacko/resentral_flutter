@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                         builder: (context) => const AboutPage()));
                     break;
                   case 2:
-                    tryGithubChangelogs(context);
+                    tryGithubChangelogs(context, false);
                     break;
                   default:
                 }

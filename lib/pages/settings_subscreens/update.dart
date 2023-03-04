@@ -33,7 +33,7 @@ Future<String> checkUpdateExists(bool startup, BuildContext context) async {
     return '';
   } else if (remoteVersion.name.toString() == packageInfo.version && startup) {
     return '';
-  } else {
+  } else if (startup) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -42,11 +42,14 @@ Future<String> checkUpdateExists(bool startup, BuildContext context) async {
         ),
         action: SnackBarAction(
           label: 'Update',
-          onPressed: () => tryOtaUpdate(context),
+          onPressed: () => tryGithubChangelogs(context, true),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
       ),
     );
+    return remoteVersion.name.toString();
+  } else {
+    tryOtaUpdate(context);
     return remoteVersion.name.toString();
   }
 }
@@ -95,7 +98,7 @@ Future<bool> getSetAutoUpdateCheck(bool doSet, bool aUC) async {
   return aUC;
 }
 
-Future<void> tryGithubChangelogs(BuildContext context) async {
+Future<void> tryGithubChangelogs(BuildContext context, bool doUpdate) async {
   late GithubReleaseLatest releaseLatest;
   final response = await http.get(
     Uri.parse(
@@ -103,7 +106,7 @@ Future<void> tryGithubChangelogs(BuildContext context) async {
   );
   if (response.statusCode == 200) {
     releaseLatest = GithubReleaseLatest.fromJson(jsonDecode(response.body));
-    await popupGithubChangelogs(releaseLatest, context);
+    await popupGithubChangelogs(releaseLatest, context, doUpdate);
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -119,7 +122,7 @@ Future<void> tryGithubChangelogs(BuildContext context) async {
 }
 
 Future<void> popupGithubChangelogs(
-    GithubReleaseLatest response, BuildContext context) async {
+    GithubReleaseLatest response, BuildContext context, bool doUpdate) async {
   return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -134,9 +137,21 @@ Future<void> popupGithubChangelogs(
           content: Text(response.body.toString(),
               style: const TextStyle(fontSize: 14.0)),
           actions: <Widget>[
+            doUpdate
+                ? TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      tryOtaUpdate(context);
+                    },
+                    child: const Text('Update'),
+                  )
+                : const SizedBox.shrink(),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                if (doUpdate) {
+                  tryOtaUpdate(context);
+                }
               },
               child: const Text('Close'),
             ),

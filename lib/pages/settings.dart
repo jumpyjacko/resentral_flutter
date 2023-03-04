@@ -225,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsTile.navigation(
               title: const Text('Check for updates'),
               onPressed: (context) async {
-                tryOtaUpdate(context);
+                tryGithubChangelogs(context, true);
               },
             ),
             SettingsTile.navigation(
