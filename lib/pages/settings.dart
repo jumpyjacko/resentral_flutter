@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:resentral/pages/settings_subscreens/update.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,16 @@ class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController websiteController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  bool autoUpdateCheck = true;
+
+  void _getSetAutoUpdateCheck(bool doSet, bool aUC) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (doSet) {
+      prefs.setBool('autoUpdateCheck', aUC);
+    }
+    autoUpdateCheck = prefs.getBool('autoUpdateCheck')!;
+  }
 
   void _setSchoolWebsite(String website) async {
     final prefs = await SharedPreferences.getInstance();
@@ -32,6 +43,12 @@ class _SettingsPageState extends State<SettingsPage> {
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSetAutoUpdateCheck(false, autoUpdateCheck);
   }
 
   Future<void> _popupClearConfirm() async {
@@ -203,6 +220,24 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
+          SettingsSection(title: const Text('App Updates'), tiles: [
+            SettingsTile.navigation(
+              title: const Text('Check for updates'),
+              onPressed: (context) async {
+                tryOtaUpdate(context);
+              },
+            ),
+            SettingsTile.navigation(
+              title: const Text('Toggle automatic update check'),
+              trailing: Switch(
+                value: autoUpdateCheck,
+                onChanged: (value) => setState(() {
+                  autoUpdateCheck = value;
+                  _getSetAutoUpdateCheck(true, autoUpdateCheck);
+                }),
+              ),
+            ),
+          ]),
           SettingsSection(
             title: const Text('Advanced'),
             tiles: [
