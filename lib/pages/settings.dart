@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:resentral/pages/settings_subscreens/update.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../globals.dart';
+import 'package:resentral/pages/settings_subscreens/update.dart';
+
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  const SettingsPage({
+    super.key,
+  });
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -15,16 +19,6 @@ class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  bool autoUpdateCheck = true;
-
-  void _getSetAutoUpdateCheck(bool doSet, bool aUC) async {
-    final prefs = await SharedPreferences.getInstance();
-    if (doSet) {
-      prefs.setBool('autoUpdateCheck', aUC);
-    }
-    autoUpdateCheck = prefs.getBool('autoUpdateCheck')!;
-  }
-
   void _setSchoolWebsite(String website) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('website', website);
@@ -34,6 +28,13 @@ class _SettingsPageState extends State<SettingsPage> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('username', username);
     prefs.setString('password', password);
+  }
+
+  Future<void> _loadAUC() async {
+    bool ph = await getSetAutoUpdateCheck(false, globalDoAutoUpdateCheck);
+    setState(() {
+      globalDoAutoUpdateCheck = ph;
+    });
   }
 
   @override
@@ -47,8 +48,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
+    _loadAUC();
     super.initState();
-    _getSetAutoUpdateCheck(false, autoUpdateCheck);
   }
 
   Future<void> _popupClearConfirm() async {
@@ -230,10 +231,10 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsTile.navigation(
               title: const Text('Toggle automatic update check'),
               trailing: Switch(
-                value: autoUpdateCheck,
+                value: globalDoAutoUpdateCheck,
                 onChanged: (value) => setState(() {
-                  autoUpdateCheck = value;
-                  _getSetAutoUpdateCheck(true, autoUpdateCheck);
+                  globalDoAutoUpdateCheck = value;
+                  getSetAutoUpdateCheck(true, globalDoAutoUpdateCheck);
                 }),
               ),
             ),

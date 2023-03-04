@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:ota_update/ota_update.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dart:convert';
 
@@ -81,6 +82,17 @@ Future<void> tryOtaUpdate(BuildContext context) async {
   } catch (e) {
     throw Exception('Failed to update. Details: $e');
   }
+}
+
+Future<bool> getSetAutoUpdateCheck(bool doSet, bool aUC) async {
+  final prefs = await SharedPreferences.getInstance();
+  if (doSet) {
+    prefs.setBool('autoUpdateCheck', aUC);
+  } else {
+    aUC = prefs.getBool('autoUpdateCheck')!;
+  }
+
+  return aUC;
 }
 
 Future<void> tryGithubChangelogs(BuildContext context) async {

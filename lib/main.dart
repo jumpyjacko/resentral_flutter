@@ -11,6 +11,7 @@ import 'package:resentral/pages/settings.dart';
 import 'package:resentral/pages/login.dart';
 import 'package:resentral/pages/about.dart';
 
+import 'globals.dart';
 import 'package:resentral/pages/settings_subscreens/update.dart';
 
 void main() {
@@ -89,6 +90,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
+    globalDoAutoUpdateCheck = (prefs.getBool('autoUpdateCheck') ?? true);
 
     if (_seen) {
       Navigator.of(context).pushReplacement(
@@ -131,10 +133,22 @@ class _HomePageState extends State<HomePage> {
     FullTimetablePage(key: UniqueKey()),
   ];
 
+  Future<void> _loadAUC() async {
+    bool ph = await getSetAutoUpdateCheck(false, globalDoAutoUpdateCheck);
+    setState(() {
+      globalDoAutoUpdateCheck = ph;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    checkUpdateExists(true, context);
+    _loadAUC();
+    Future.delayed(Duration(seconds: 1), () {
+      if (globalDoAutoUpdateCheck) {
+        checkUpdateExists(true, context);
+      }
+    });
   }
 
   @override
