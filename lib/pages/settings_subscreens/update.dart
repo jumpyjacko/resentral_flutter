@@ -149,9 +149,6 @@ Future<void> popupGithubChangelogs(
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                if (doUpdate) {
-                  tryOtaUpdate(context);
-                }
               },
               child: const Text('Close'),
             ),
