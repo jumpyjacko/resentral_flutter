@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:ota_update/ota_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'dart:convert';
 
@@ -134,8 +135,12 @@ Future<void> popupGithubChangelogs(
             'Latest Changelogs - \n${response.name}',
             style: const TextStyle(fontSize: 20.0),
           ),
-          content: Text(response.body.toString(),
-              style: const TextStyle(fontSize: 14.0)),
+          content: MarkdownBody(
+            data: response.body.toString(),
+            styleSheet: MarkdownStyleSheet(
+                h1: const TextStyle(fontSize: 16.0),
+                p: const TextStyle(fontSize: 14.0)),
+          ),
           actions: <Widget>[
             doUpdate
                 ? TextButton(
